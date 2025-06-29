@@ -1,7 +1,8 @@
 """
 Author : John Varghese
 Date : 6/28/2025
-This is once again an attempt at 
+This is yet another attempt to analyze and visualize real-world data using `pandas`, `NumPy`, and `Matplotlib`.
+The data used in this project is from an excel sheet that I made to track my practice test scores while preparing for my university's Foundation Exam for my major.
 """
 import numpy as np
 import pandas as pd
@@ -30,7 +31,7 @@ passingLines = clean_df['Passing Line'].tolist()
 scores = clean_df['Score'].tolist()
 
 #Optional: print these 3 arrays to ensure that data is accurate
-print("LISTS")
+print("LISTS:")
 print(f"List of Days: {daysArr}")
 print(f"List of Passing lines: {passingLines}")
 print(f"List of scores: {scores}")
