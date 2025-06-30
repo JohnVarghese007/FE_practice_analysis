@@ -5,7 +5,7 @@ The data used in this project is from an excel sheet that I made to track my pra
 
 ## 📊 Features/Points of Focus
 - Extracting data from excel sheet to create a DataFrame
-- Redjust DataFrame to account for the fact that the table of values in the excel sheet is off-center (i.e doesnt start at (0,0))
+- Re-adjust DataFrame to account for the fact that the table of values in the excel sheet is off-center (i.e doesnt start at (0,0))
 - Data cleaning to some small extent - removing exam data with invalid (Pass/Fail) status 
 - Visualizes scores and passing lines across timeline using a line chart
 - Printing some relevant summary statistics

@@ -1,0 +1,20 @@
+LISTS:
+--List of Days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+--List of Passing lines: [65, 65, 55, 55, 55, 60, 55, 55, 60, 55, 55, 55, 65, 60, 55, 60]
+--List of scores: [63, 80, 64, 70, 73, 66, 74, 66, 75, 84, 75, 94, 84, 80, 88, 80]
+
+
+SUMMARY STATISTICS
+--Average score: 76.0
+--Median score: 75.0
+--Standard deviation: 8.689073598491383
+--Variance: 75.5
+--Most common passing line: 55
+
+Insights based on slope (m value):
+--Your practice scores show an upward trend! 
+--slope: 1.3118383320938067
+
+Verifying accuracy of model with np.polyfit()
+--Expected slope according to manual implementation of linear regression for the scores: 1.3118383320938067, intercept: 64.84919206411442
+--Expected slope according to polyfit: 1.3117647058823503, intercept: 64.85000000000002

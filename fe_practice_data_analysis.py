@@ -7,6 +7,7 @@ The data used in this project is from an excel sheet that I made to track my pra
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import stats
 
 #extract original dataframe
 original_df = pd.read_excel(r"algosForML\FE_practice_analysis\ProgressTracking.xlsx",header=None)
@@ -31,16 +32,19 @@ passingLines = clean_df['Passing Line'].tolist()
 scores = clean_df['Score'].tolist()
 
 #Optional: print these 3 arrays to ensure that data is accurate
-print("LISTS:")
-print(f"List of Days: {daysArr}")
-print(f"List of Passing lines: {passingLines}")
-print(f"List of scores: {scores}")
+
+# All output text from this file be printed to a file named 'output__file.txt'
+with open(r"algosForML\FE_practice_analysis\output_file.txt","w") as file:
+    file.write("LISTS:\n")
+    file.write(f"--List of Days: {daysArr}\n")
+    file.write(f"--List of Passing lines: {passingLines}\n")
+    file.write(f"--List of scores: {scores}\n\n")
 
 #plotting practice line graph with results
 plt.figure(facecolor='lightyellow')
 plt.plot(daysArr,scores,'o-', color = 'red',label = 'Scores')
 plt.plot(daysArr,passingLines,'o-',color = 'green',label = 'Passing Line')
-plt.title('Foundation Exam Practice Progress across time (t = 16 days)')
+plt.title(f'Foundation Exam Practice Progress across time (t = {len(daysArr)} days)')
 plt.xlabel('Days (x)')
 plt.ylabel('Scores (y)')
 plt.legend()
@@ -57,15 +61,72 @@ average = np.mean(scores)
 median = np.median(scores)
 sDev = np.std(scores)
 variance = np.var(scores)
-mode = max(set(passingLines),key = passingLines.count)
+modeRes = stats.mode(passingLines,axis = None)
 
-#printing some summary statistics
-print("\nSUMMARY STATISTICS")
-print(f"Average score: {average}")
-print(f"Median score: {median}")
-print(f"Standard deviation: {sDev}")
-print(f"Variance: {variance}")
-print(f"Most common passing line: {mode}")
+#printing some summary statistics in output file
+with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
+    file.write("\nSUMMARY STATISTICS\n")
+    file.write(f"--Average score: {average}\n")
+    file.write(f"--Median score: {median}\n")
+    file.write(f"--Standard deviation: {sDev}\n")
+    file.write(f"--Variance: {variance}\n")
+    file.write(f"--Most common passing line: {modeRes.mode}\n")
 
 #displaying plot
 plt.show()
+
+## MANUAL IMPLEMENTATION OF LINEAR REGRESSION ##
+# I PRINT OUT THE VALUES GIVEN BY NP.POLYFIT() AT THE END FOR COMPARISON #
+
+x_vals = np.array(daysArr)
+y_vals = np.array(scores)
+#y = mx+c
+y_predicted = 0
+m = 0
+c = 0
+epochs = 5000
+learning_rate = 0.005
+num_lines = len(y_vals)
+
+#loop for training
+for i in range(epochs):
+    y_predicted = m*x_vals +c
+
+    #find gradients of MSE loss function for m and c
+    grad_m = (-2/num_lines)*np.sum(x_vals*(y_vals - y_predicted))
+    grad_c = (-2/num_lines)*np.sum((y_vals - y_predicted))
+
+    #gradient descent
+    m-=learning_rate * grad_m
+    c-= learning_rate * grad_c
+
+#printing some insights based on m value
+with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
+    file.write(f"\nInsights based on slope (m value):\n")
+    if m > 0:
+        file.write(f"--Your practice scores show an upward trend! \n--slope: {m}\n")
+    elif m < 0:
+        file.write(f"--Your practice scores show a downward trend! \n--slope: {m}\n")
+    else:
+        file.write(f"--Your scores largely show no improvement! \n--slope: {m}\n")
+    
+
+#plotting true values
+plt.plot(x_vals,y_vals,'o',color = 'blue', label = 'Scores')
+#plotting trendline
+plt.plot(x_vals,m*x_vals+c,color = 'red', label = 'Regression Line')
+
+#add labels, legends and show the plot
+plt.xlabel('Days (x)')
+plt.ylabel('Scores (y)')
+plt.legend()
+plt.title('Linear Regression')
+plt.savefig(r"algosForML\FE_practice_analysis\fe_practice_linear_regression.png")
+plt.show()
+
+m_actual, c_actual = np.polyfit(x_vals, y_vals, 1)
+# Comparing slope and y-intercept values with  results from np.polyfit()  for comparison #
+with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
+    file.write(f"\nVerifying accuracy of model with np.polyfit()\n")
+    file.write(f"--Expected slope according to manual implementation of linear regression for the scores: {m}, intercept: {c}\n")
+    file.write(f"--Expected slope according to polyfit: {m_actual}, intercept: {c_actual}\n")
