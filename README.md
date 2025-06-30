@@ -7,7 +7,7 @@ The data used in this project is from an excel sheet that I made to track my pra
 - Extracting data from excel sheet to create a DataFrame
 - Re-adjust DataFrame to account for the fact that the table of values in the excel sheet is off-center (i.e doesnt start at (0,0))
 - Data cleaning to some small extent - removing exam data with invalid (Pass/Fail) status 
-- Visualize scores and passing lines across timeline using a line chart (matplotlb)
+- Visualize scores and passing lines across timeline using a line chart (matplotlib)
 - File handling (writing/appending output data to a file)
 - Printing some relevant summary statistics and general insights
 - Manual Implementation of Linear Regression using Gradient Descent with Visualization using matplotlib
@@ -18,7 +18,7 @@ The data used in this project is from an excel sheet that I made to track my pra
 
 - `fe_practice_data_analysis.py` — Main Python script
 - `fe_practice_line_chart.png` — Line chart generated using Matplotlib.pyplot
-- `fe_practice_line_chart.png` — Linear regression plot using Matplotlib.pyplot
+- `fe_practice_linear_regression.png` — Linear regression plot using Matplotlib.pyplot
 - `ProgressTracking.xlsx` — Data source
 - `output_file.txt` — Output saved to a `.txt` file
 
@@ -34,4 +34,4 @@ The data used in this project is from an excel sheet that I made to track my pra
 Install requirements (if needed):
 
 ```bash
-pip install pandas numpy matplotlib
+pip install pandas numpy matplotlib scipy
