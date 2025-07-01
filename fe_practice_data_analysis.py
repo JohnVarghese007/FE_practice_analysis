@@ -75,6 +75,28 @@ with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
 #displaying plot
 plt.show()
 
+## PIE CHART SHOWING PASS/FAIL PERCENTAGE
+pass_count = 0
+fail_count = 0
+
+# Loop through the 'Pass/Fail' column
+for val in clean_df['Pass/Fail']:
+    val_str = str(val).strip().lower() #converts to lowercase
+    if val_str.startswith('p'):  # 'p', 'pass', etc.
+        pass_count += 1
+    else: 
+        fail_count += 1
+
+# Create dictionary for plotting
+pass_fail_counts = {'Pass': pass_count, 'Fail': fail_count}
+plt.figure(figsize=(6,6), facecolor='lightyellow')
+plt.pie(pass_fail_counts.values(), labels=pass_fail_counts.keys(),
+        autopct='%1.1f%%', colors=['green', 'red'], startangle=90)
+plt.title('Pass vs Fail Rate')
+plt.tight_layout()
+plt.savefig(r"algosForML\FE_practice_analysis\pass_fail_pie_chart.png")
+plt.show()
+
 ## MANUAL IMPLEMENTATION OF LINEAR REGRESSION ##
 # I PRINT OUT THE VALUES GIVEN BY NP.POLYFIT() AT THE END FOR COMPARISON #
 
@@ -87,10 +109,13 @@ c = 0
 epochs = 5000
 learning_rate = 0.005
 num_lines = len(y_vals)
-
+mse_history = []
 #loop for training
 for i in range(epochs):
     y_predicted = m*x_vals +c
+    
+    #appending MSE history
+    mse_history.append(np.mean((y_vals - y_predicted)**2))
 
     #find gradients of MSE loss function for m and c
     grad_m = (-2/num_lines)*np.sum(x_vals*(y_vals - y_predicted))
@@ -112,6 +137,7 @@ with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
     
 
 #plotting true values
+plt.figure(facecolor='lightyellow')
 plt.plot(x_vals,y_vals,'o',color = 'blue', label = 'Scores')
 #plotting trendline
 plt.plot(x_vals,m*x_vals+c,color = 'red', label = 'Regression Line')
@@ -121,6 +147,8 @@ plt.xlabel('Days (x)')
 plt.ylabel('Scores (y)')
 plt.legend()
 plt.title('Linear Regression')
+plt.grid(True)
+plt.tight_layout()
 plt.savefig(r"algosForML\FE_practice_analysis\fe_practice_linear_regression.png")
 plt.show()
 
@@ -130,3 +158,15 @@ with open(r"algosForML\FE_practice_analysis\output_file.txt","a") as file:
     file.write(f"\nVerifying accuracy of model with np.polyfit()\n")
     file.write(f"--Expected slope according to manual implementation of linear regression for the scores: {m}, intercept: {c}\n")
     file.write(f"--Expected slope according to polyfit: {m_actual}, intercept: {c_actual}\n")
+
+# plotting MSE over epochs
+plt.figure(facecolor='lightyellow')
+plt.plot(np.arange(0,epochs,1),mse_history,color = 'red', label = 'MSE')
+plt.xlabel('Epochs(x)')
+plt.ylabel('MSE (y)')
+plt.legend()
+plt.title(f'Mean Squared Error over Epochs (n={epochs})')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(r"algosForML\FE_practice_analysis\fe_practice_mse_vs_epochs.png")
+plt.show()
